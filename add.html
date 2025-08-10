@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Bank Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-image: url('https://cdn.pixabay.com/photo/2017/03/23/12/36/bank-2169234_1280.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Overlay for better contrast */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.85);
+            z-index: 0;
+        }
+
+        form,
+        h2,
+        .home-link {
+            position: relative;
+            z-index: 1;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 60px auto;
+            padding: 20px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            width: 100%;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 40px;
+            color: #333;
+        }
+
+        .home-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .home-link a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .home-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Add Bank Account</h2>
+    <form id="bankAccountForm">
+        <label for="name">Account Holder Name:</label>
+        <input type="text" id="name" required>
+
+        <label for="accountNumber">Account Number:</label>
+        <input type="text" id="accountNumber" required>
+
+        <label for="bankName">Bank Name:</label>
+        <input type="text" id="bankName" required>
+
+        <label for="ifsc">IFSC Code:</label>
+        <input type="text" id="ifsc" required>
+
+        <button type="submit">Add Account</button>
+    </form>
+
+    <!-- <div class="home-link">
+        <a href="new.html">Home</a>
+    </div> -->
+    <script>
+        document.getElementById('bankAccountForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const accountNumber = document.getElementById('accountNumber').value.trim();
+            const bankName = document.getElementById('bankName').value.trim();
+            const ifsc = document.getElementById('ifsc').value.trim();
+
+            if (!name || !accountNumber || !bankName || !ifsc) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            if (!/^\d{9,18}$/.test(accountNumber)) {
+                alert('Please enter a valid account number (9-18 digits)');
+                return;
+            }
+
+            if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc)) {
+                alert('Invalid IFSC code format. Example: SBIN0001234');
+                return;
+            }
+
+            const accountData = { name, accountNumber, bankName, ifsc };
+            let accounts = JSON.parse(localStorage.getItem('bankAccounts')) || [];
+            accounts.push(accountData);
+            localStorage.setItem('bankAccounts', JSON.stringify(accounts));
+
+            alert('Bank account added successfully!');
+            window.location.href = "new.html"; // 👈 Redirect after success
+        });
+
+    </script>
+</body>
+</htm

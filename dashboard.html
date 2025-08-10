@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Cash Records</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            position: relative;
+            color: #2c3e50;
+        }
+
+
+        /* Light overlay for readability */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 60px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 18px rgba(0, 0, 0, 0.25);
+        }
+
+        h2,
+        h3 {
+            text-align: center;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fdfdfd;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: center;
+            font-size: 0.95em;
+        }
+
+        th {
+            background-color: #f4f6f7;
+            font-weight: bold;
+        }
+
+        input,
+        button,
+        select {
+            margin-top: 8px;
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        li {
+            list-style: none;
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        li a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        li a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Bank Cash Records</h2>
+
+        <label for="transactionType">Transaction Type:</label>
+        <select id="transactionType">
+            <option value="Deposit">Deposit</option>
+            <option value="Withdraw">Withdraw</option>
+        </select>
+
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" placeholder="Enter amount">
+
+        <button onclick="addTransaction()">Add Transaction</button>
+
+        <h3>Transaction History</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody id="transactionTable"></tbody>
+        </table>
+
+        <li><a href="new.html">← Back to Home</a></li>
+    </div>
+
+    <script>
+        let balance = 0;
+
+        function addTransaction() {
+            const type = document.getElementById("transactionType").value;
+            const amount = parseFloat(document.getElementById("amount").value);
+
+            if (isNaN(amount) || amount <= 0) {
+                alert("Please enter a valid amount.");
+                return;
+            }
+
+            if (type === "Withdraw" && amount > balance) {
+                alert("Insufficient balance.");
+                return;
+            }
+
+            balance = type === "Deposit" ? balance + amount : balance - amount;
+
+            const table = document.getElementById("transactionTable");
+            const row = table.insertRow();
+            row.insertCell(0).textContent = new Date().toLocaleString();
+            row.insertCell(1).textContent = type;
+            row.insertCell(2).textContent = `$${amount.toFixed(2)}`;
+            row.insertCell(3).textContent = `$${balance.toFixed(2)}`;
+
+            document.getElementById("amount").value = "";
+        }
+    </script>
+</body>
+
+</html>
